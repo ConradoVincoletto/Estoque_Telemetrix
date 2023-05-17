@@ -12,8 +12,7 @@ namespace Domain.Entities
     public class Produto
     {
         [Key]
-        [Column("PRODUTO_ID")]
-        [Display(Name ="CÓDIGO_PRODUTO")]
+        [Column("PRODUTO_ID")]        
         public int Id { get; set; }
 
         [Column("PRODUTO_NOME")]       
@@ -25,7 +24,7 @@ namespace Domain.Entities
         [Column("PRODUTO_QUANTIDADE")]        
         public decimal QuantidadeDisponivel { get; set; }
 
-        [Column("PRODUTO_DATA")]
+        [Column("PRODUTO_DATA_CRIAÇÃO")]
         public DateTime DataCriacao { get; set; }
 
         [Column("PRODUTO_ATIVO")]
