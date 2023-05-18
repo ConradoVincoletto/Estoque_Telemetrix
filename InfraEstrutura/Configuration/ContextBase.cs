@@ -22,6 +22,7 @@ namespace InfraEstrutura.Configuration
             modelBuilder.Entity<Produto>()
                 .HasOne(a => a.categoria);
                 
+                
         }
     }
 }

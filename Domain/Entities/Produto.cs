@@ -25,9 +25,9 @@ namespace Domain.Entities
         public decimal QuantidadeDisponivel { get; set; }
 
         [Column("PRODUTO_DATA_CRIAÇÃO")]
-        public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public DateTime DataCriacao { get; private set; } = DateTime.Now;
 
         [Column("PRODUTO_ATIVO")]
-        public bool Ativo { get; set; }
+        public bool Ativo { get; set; } = true;
     }
 }

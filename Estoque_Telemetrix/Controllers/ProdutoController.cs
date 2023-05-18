@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Interfaces;
+using Domain.Entities;
 using Domain.Interfaces.InterfaceProduto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,29 +10,33 @@ namespace Estoque_Telemetrix.Controllers
     [ApiController]
     public class ProdutoController : Controller
     {
-        private readonly IProduto _IProduto;
+        
+        private readonly ITelemetrix _ITelemetrix;
 
-        public ProdutoController(IProduto iProduto)
+
+
+        public ProdutoController(ITelemetrix iTelemetrix)
         {
-            _IProduto = iProduto;
+            _ITelemetrix = iTelemetrix;
         }
 
         [HttpGet("ListasProdutos")]
         public async Task<IActionResult> ListasProdutos()
         {
-            return Json(await _IProduto.List());
+            //return Json(await _IProduto.List());
+            return Json(await _ITelemetrix.ListarProdutos());
         }
 
         [HttpPost("AdicionarProduto")]
-        public async Task AdicionarProduto(Produto produto)
+        public async Task<IActionResult> AdicionarProduto(Produto produto)
         {
-            await _IProduto.Add(produto);
+            return Json(await _ITelemetrix.AdicionarProduto(produto));
         }
 
         [HttpGet("ObterProdutoPorId")]
         public async Task<IActionResult> ObterProdutoPorId(int Id)
         {
-            return Json(await _IProduto.GetEntityById(Id));
+            return Json(await _ITelemetrix.ObterProdutoPorId(Id));
         }
 
         [HttpPut("AtualizarProduto")]
