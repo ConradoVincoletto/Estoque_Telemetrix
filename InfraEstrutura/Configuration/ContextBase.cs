@@ -17,5 +17,6 @@ namespace InfraEstrutura.Configuration
         public DbSet<Categoria> categorias { get; set; }
         public DbSet<Produto> produtos { get; set; }
 
+       
     }
 }

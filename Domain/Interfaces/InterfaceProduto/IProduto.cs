@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.InterfaceProduto
 {
-    public interface ICategoria : IGenerics<Categoria>
+    public interface IProduto : IGenerics<Produto>
     {
     }
 }

@@ -11,75 +11,87 @@ using System.Threading.Tasks;
 
 namespace InfraEstrutura.Repository.Generics
 {
-    public class RepositoryGenerics<TEntity> : IDisposable where TEntity : class
+    public class RepositoryGenerics<T> : IDisposable where T : class
     {
-        private readonly DbContextOptions<ContextBase> _OptionsBuilder;
-
-        public RepositoryGenerics(DbContextOptions<ContextBase> optionsBuilder)
+        private readonly DbContextOptions<ContextBase> _OptionBuilder;
+        public RepositoryGenerics()
         {
-            _OptionsBuilder = optionsBuilder;
+            _OptionBuilder = new DbContextOptions<ContextBase>();
         }
 
-        public async Task CreateAsync(TEntity entity)
+        public async Task Add(T Objeto)
         {
-            using (var data = new ContextBase(_OptionsBuilder))
+            using (var data = new ContextBase(_OptionBuilder))
             {
-                await data.AddAsync(entity);
+                await data.Set<T>().AddAsync(Objeto);
                 await data.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task Delete(T Objeto)
         {
-            using (var data = new ContextBase(_OptionsBuilder))
+            using (var data = new ContextBase(_OptionBuilder))
             {
-                return await data.Set<TEntity>().ToListAsync();
-            }
-        }
-
-        public async Task<TEntity> GetByIdAsync(int id)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                return await data.Set<TEntity>().FindAsync(id);
-            }
-        }
-
-        public async Task UpdateAsync(int id, TEntity entity)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                data.Set<TEntity>().Update(entity);
+                data.Set<T>().Remove(Objeto);
                 await data.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<T> GetEntityById(int Id)
         {
-            using (var data = new ContextBase(_OptionsBuilder))
+            using (var data = new ContextBase(_OptionBuilder))
             {
-                return await data.Set<TEntity>().Where(predicate).ToListAsync();
+                return await data.Set<T>().FindAsync(Id);
+
+            }
+        }
+
+        public async Task<List<T>> List()
+        {
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                return await data.Set<T>().ToListAsync();
+
+            }
+        }
+
+        public async Task Update(T Objeto)
+        {
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                data.Set<T>().Update(Objeto);
+                await data.SaveChangesAsync();
             }
         }
 
         bool disposed = false;
+
         SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
+
+
 
         public void Dispose()
         {
+            // Dispose of unmanaged resources.
             Dispose(true);
+            // Suppress finalization.
             GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
-                handle.Dispose();                
+                handle.Dispose();
             }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
 
             disposed = true;
         }

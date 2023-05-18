@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Generics
 {
-    public interface IGenerics<TEntity> where TEntity : class
+    public interface IGenerics<T> where T : class
     {
-        Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task CreateAsync(TEntity entity);
-        Task UpdateAsync(int id, TEntity entity);
+        Task Add(T Objeto);
+        Task Update(T Objeto);
+        Task Delete(T Objeto);
+        Task<T> GetEntityById(int Id);
+        Task<List<T>> List();
     }
 }
