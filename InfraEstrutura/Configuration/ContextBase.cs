@@ -17,6 +17,11 @@ namespace InfraEstrutura.Configuration
         public DbSet<Categoria> categorias { get; set; }
         public DbSet<Produto> produtos { get; set; }
 
-       
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Produto>()
+                .HasOne(a => a.categoria)
+                
+        }
     }
 }
