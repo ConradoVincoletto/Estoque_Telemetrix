@@ -20,7 +20,7 @@ namespace InfraEstrutura.Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
-                .HasOne(a => a.categoria)
+                .HasOne(a => a.categoria);
                 
         }
     }
