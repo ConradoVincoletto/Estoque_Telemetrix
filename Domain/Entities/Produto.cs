@@ -28,6 +28,6 @@ namespace Domain.Entities
         public DateTime DataCriacao { get; private set; } = DateTime.Now;
 
         [Column("PRODUTO_ATIVO")]
-        public bool Ativo { get; set; } = true;
+        public bool Ativo { get; set; }
     }
 }

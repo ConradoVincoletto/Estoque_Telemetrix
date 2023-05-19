@@ -1,17 +1,32 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Domain.Interfaces.InterfaceCategoria;
 using Domain.Interfaces.InterfaceProduto;
+using InfraEstrutura.Configuration;
+using Microsoft.VisualBasic;
 
 namespace Application
 {
     public class TelemetrixApplication : ITelemetrix
     {
         private readonly IProduto _iProduto;
+        private readonly ICategoria _iCategoria;
         public TelemetrixApplication(IProduto iProduto)
         {
             _iProduto = iProduto;
         }
-        public async Task<List<Produto>>  ListarProdutos()
+
+        public Task<Produto> AtualizarProduto(Produto produto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<Categoria>> ListarCategorias()
+        {
+            var categoria = await _iCategoria.List();
+            return categoria.Where(c => c.Ativo).ToList();
+        }
+        public async Task<List<Produto>> ListarProdutos()
         {
             var produtos = await _iProduto.List();
 
@@ -25,13 +40,13 @@ namespace Application
                 return true;
             }
             else { return false; }
-                
+
         }
 
         public async Task<Produto> ObterProdutoPorId(int id)
         {
-            var produto =  await _iProduto.GetEntityById(id);
-            if(produto == null)
+            var produto = await _iProduto.GetEntityById(id);
+            if (produto == null)
             {
                 return new Produto();
             }
@@ -41,14 +56,20 @@ namespace Application
             }
             return new Produto();
         }
-        private async Task<bool> PermiteAdicionarProduto(Categoria categoria) 
+
+
+        private async Task<bool> PermiteAdicionarProduto(Categoria categoria)
         {
             var produtos = await _iProduto.List();
             int qtdProdutos = produtos.Count(p => p.categoria.Id == categoria.Id);
             return qtdProdutos < categoria.MaximoItens;
         }
-
+              
         
 
+
+       
+
+      
     }
 }

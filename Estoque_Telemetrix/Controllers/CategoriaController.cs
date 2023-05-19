@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Interfaces;
+using Domain.Entities;
 using Domain.Interfaces.InterfaceCategoria;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,18 +10,18 @@ namespace Estoque_Telemetrix.Controllers
     [ApiController]
     public class CategoriaController : Controller
     {
-        private readonly ICategoria _ICategoria;
+        private readonly ITelemetrix _ITelemetrix;
 
-        public CategoriaController(ICategoria iCategoria)
+        public CategoriaController(ITelemetrix _iTelemetrix)
         {
-            _ICategoria = iCategoria;
+            _ITelemetrix= _iTelemetrix;
         }
 
         [HttpGet("ListasCategorias")]
 
-        public async Task<IActionResult> ListasProdutos()
+        public async Task<IActionResult> ListasCategorias()
         {
-            return Json(await _ICategoria.List());
+            return Json(await _ITelemetrix.ListarCategorias());
         }
 
         [HttpPost("AdicionarCategoria")]
