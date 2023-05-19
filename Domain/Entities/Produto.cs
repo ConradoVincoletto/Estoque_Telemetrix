@@ -18,8 +18,8 @@ namespace Domain.Entities
         [Column("PRODUTO_NOME")]       
         public string Nome { get; set; }
 
-        [Column("PRODUTO_CATEGORA")]        
-        public Categoria categoria { get; set; }
+        [Column("PRODUTO_CATEGORIA")]        
+        public int CategoriaId { get; set; }
 
         [Column("PRODUTO_QUANTIDADE")]        
         public decimal QuantidadeDisponivel { get; set; }

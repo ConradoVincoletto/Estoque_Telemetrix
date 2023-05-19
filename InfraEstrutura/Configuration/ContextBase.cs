@@ -23,8 +23,8 @@ namespace InfraEstrutura.Configuration
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Produto>()
-                .HasOne(a => a.categoria);            
+            //modelBuilder.Entity<Produto>()
+                //.HasOne(a => a.categoria);           
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -43,7 +43,7 @@ namespace Application
         }
         public async Task<bool> AdicionarProduto(Produto produto)
         {
-            if (await PermiteAdicionarProduto(produto.categoria))
+            if (await PermiteAdicionarProduto(produto.CategoriaId))
             {
                 await _iProduto.Add(produto);
                 return true;
@@ -85,7 +85,7 @@ namespace Application
         }
 
 
-        private async Task<bool> PermiteAdicionarProduto(Categoria categoria)
+        private async Task<bool> PermiteAdicionarProduto(int categoriaId)
         {
             //verificando se existe alguma categoria cadastrado
             var categorias = await _iCategoria.List();
@@ -93,7 +93,9 @@ namespace Application
 
             //verificando se categoria excede quantidade máxima de produtos cadastrados 
             var produtos = await _iProduto.List();
-            int qtdProdutos = produtos.Count(p => p.categoria.Id == categoria.Id);
+            int qtdProdutos = produtos.Count(p => p.CategoriaId == categoriaId);
+            var categoria = categorias.FirstOrDefault(i => i.Id == categoriaId);
+            if(categoria == null) { return false; }
             return qtdProdutos < categoria.MaximoItens;
         }             
 

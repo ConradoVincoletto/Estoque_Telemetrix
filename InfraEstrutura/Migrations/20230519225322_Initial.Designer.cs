@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InfraEstrutura.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    [Migration("20230519193137_202305191630_AlteracaoDataCriacaoType")]
-    partial class _202305191630_AlteracaoDataCriacaoType
+    [Migration("20230519225322_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,8 +66,12 @@ namespace InfraEstrutura.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("PRODUTO_ATIVO");
 
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int")
+                        .HasColumnName("PRODUTO_CATEGORA");
+
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("PRODUTO_DATA_CRIAÇÃO");
 
                     b.Property<string>("Nome")
@@ -79,25 +83,9 @@ namespace InfraEstrutura.Migrations
                         .HasColumnType("decimal(65,30)")
                         .HasColumnName("PRODUTO_QUANTIDADE");
 
-                    b.Property<int>("categoriaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("categoriaId");
-
                     b.ToTable("TB_PRODUTO");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Produto", b =>
-                {
-                    b.HasOne("Domain.Entities.Categoria", "categoria")
-                        .WithMany()
-                        .HasForeignKey("categoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("categoria");
                 });
 #pragma warning restore 612, 618
         }
