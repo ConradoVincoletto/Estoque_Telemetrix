@@ -12,33 +12,73 @@ using System.Threading.Tasks;
 
 namespace InfraEstrutura.Repository.Repositories
 {
-    public class RepositorioCategoria : RepositoryGenerics<Categoria>, ICategoria
+    public class RepositorioCategoria : ICategoria
     {
         private readonly DbContextOptions<ContextBase> _OptionBuilder;
 
         public RepositorioCategoria()
         {
             _OptionBuilder = new DbContextOptions<ContextBase>();
+        }     
+        
+
+        public async Task<bool> Add(Categoria objeto)
+        {
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                await data.Set<Categoria>().AddAsync(objeto);
+                await data.SaveChangesAsync();
+                
+            }
+            return true;
+            
         }
 
-        public Task<bool> Delete(int Id)
+        public async Task<List<Categoria>> List()
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                return await data.Set<Categoria>().ToListAsync();
+
+            }
         }
 
-        public Task ExecutarMigracao()
+        public async Task<Categoria> GetCategoriaById(int Id)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                return await data.Set<Categoria>().FindAsync(Id);
+
+            }
         }
 
-        Task<bool> IGenerics<Categoria>.Add(Categoria objeto)
+       
+
+        public async Task<Categoria> Update(Categoria objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                data.Set<Categoria>().Update(objeto);
+                await data.SaveChangesAsync();
+                return objeto;
+            }           
         }
 
-        Task<bool> IGenerics<Categoria>.Update(Categoria objeto)
+        public async Task<Categoria> Delete(Categoria objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                var categoria = await data.Set<Categoria>().FindAsync(objeto.Id);
+                if (categoria != null)
+                {
+                    data.Set<Categoria>().Remove(categoria);
+                    await data.SaveChangesAsync();
+                    
+                }
+                return objeto;
+            }                       
         }
+
+        
     }
 }

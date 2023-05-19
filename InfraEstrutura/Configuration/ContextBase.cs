@@ -24,7 +24,22 @@ namespace InfraEstrutura.Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Produto>()
-                .HasOne(a => a.categoria);
+                .HasOne(a => a.categoria);            
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql(GetStringConectionConfig(), ServerVersion.Parse("8.0.31-mysql"));
+                base.OnConfiguring(optionsBuilder);
+            }
+        }
+
+        private string GetStringConectionConfig()
+        {
+            string strCon = "Server=localhost;initial catalog=telemetrix;uid=root;pwd=123456";
+            return strCon;
         }
 
         public override int SaveChanges()

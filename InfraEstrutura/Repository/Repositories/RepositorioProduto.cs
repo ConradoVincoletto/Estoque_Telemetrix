@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace InfraEstrutura.Repository.Repositories
 {
-    public class RepositorioProduto: RepositoryGenerics<Produto>, IProduto
+    public class RepositorioProduto: IProduto
     {
         private readonly DbContextOptions<ContextBase> _OptionBuilder;
         public RepositorioProduto()
@@ -20,24 +20,59 @@ namespace InfraEstrutura.Repository.Repositories
             _OptionBuilder = new DbContextOptions<ContextBase>();
         }
 
-        public Task<bool> Delete(int Id)
+        public async Task<bool> Add(Produto objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                await data.Set<Produto>().AddAsync(objeto);
+                await data.SaveChangesAsync();
+
+            }
+            return true;
         }
 
-        public Task ExecutarMigracao()
+        public async Task<List<Produto>> List()
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                return await data.Set<Produto>().ToListAsync();
+
+            }
         }
 
-        Task<bool> IGenerics<Produto>.Add(Produto objeto)
+        public async Task<Produto> GetProdutoById(int Id)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                return await data.Set<Produto>().FindAsync(Id);
+
+            }
         }
 
-        Task<bool> IGenerics<Produto>.Update(Produto objeto)
+        public async Task<Produto> Update(Produto objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                data.Set<Produto>().Update(objeto);
+                await data.SaveChangesAsync();
+                return objeto;
+            }
         }
+
+        public async Task<Produto> Delete(Produto objeto)
+        {
+            using (var data = new ContextBase(_OptionBuilder))
+            {
+                var produto = await data.Set<Produto>().FindAsync(objeto.Id);
+                if (produto != null)
+                {
+                    data.Set<Produto>().Remove(produto);
+                    await data.SaveChangesAsync();
+
+                }
+                return objeto;
+            }
+        }
+
     }
 }

@@ -8,7 +8,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.InterfaceCategoria
 {
-    public interface ICategoria : IGenerics<Categoria>
+    public interface ICategoria
     {
+        Task<bool> Add(Categoria objeto);
+        Task<Categoria> GetCategoriaById(int id);
+        Task<List<Categoria>> List();
+        Task<Categoria> Update(Categoria objeto);
+        Task<Categoria> Delete(Categoria objeto);
     }
 }

@@ -11,10 +11,12 @@ namespace Application
     {
         private readonly IProduto _iProduto;
         private readonly ICategoria _iCategoria;
-        public TelemetrixApplication(IProduto iProduto)
+        public TelemetrixApplication(IProduto iProduto, ICategoria iCategoria)
         {
             _iProduto = iProduto;
-        }        
+            _iCategoria = iCategoria;
+        }  
+        
 
         public Task<Produto> AtualizarProduto(Produto produto)
         {
@@ -52,7 +54,7 @@ namespace Application
 
         public async Task<Produto> ObterProdutoPorId(int id)
         {
-            var produto = await _iProduto.GetEntityById(id);
+            var produto = await _iProduto.GetProdutoById(id);
             if (produto == null)
             {
                 return new Produto();
@@ -66,7 +68,7 @@ namespace Application
 
         public async Task<Categoria> ObterCategoriaPorId(int Id)
         {
-            var categoria = await _iCategoria.GetEntityById(Id);
+            var categoria = await _iCategoria.GetCategoriaById(Id);
             if(categoria == null)
             {
                 return new Categoria();
@@ -77,18 +79,24 @@ namespace Application
             }
             return new Categoria();
         }
+        public Task<Categoria> AtualizarCategoria(Categoria categoria)
+        {
+            throw new NotImplementedException();
+        }
 
 
         private async Task<bool> PermiteAdicionarProduto(Categoria categoria)
         {
+            //verificando se existe alguma categoria cadastrado
+            var categorias = await _iCategoria.List();
+            if(!categorias.Any()) { return false; }
+
+            //verificando se categoria excede quantidade máxima de produtos cadastrados 
             var produtos = await _iProduto.List();
             int qtdProdutos = produtos.Count(p => p.categoria.Id == categoria.Id);
             return qtdProdutos < categoria.MaximoItens;
         }             
 
-        public Task<Categoria> AtualizarCategoria(Categoria categoria)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }
