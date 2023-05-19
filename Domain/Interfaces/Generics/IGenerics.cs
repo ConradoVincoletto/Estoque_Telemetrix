@@ -8,10 +8,13 @@ namespace Domain.Interfaces.Generics
 {
     public interface IGenerics<T> where T : class
     {
-        Task Add(T Objeto);
-        Task Update(T Objeto);
-        Task Delete(T Objeto);
-        Task<T> GetEntityById(int Id);
+
         Task<List<T>> List();
+        Task<T> GetEntityById(int id);
+        Task<bool> Add(T objeto);
+        Task<bool> Update(T objeto);
+        Task<bool> Delete(int Id);
+        Task ExecutarMigracao();
+
     }
 }

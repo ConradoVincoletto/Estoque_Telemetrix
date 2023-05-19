@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Interfaces.Generics;
 using Domain.Interfaces.InterfaceCategoria;
 using InfraEstrutura.Configuration;
 using InfraEstrutura.Repository.Generics;
@@ -18,6 +19,26 @@ namespace InfraEstrutura.Repository.Repositories
         public RepositorioCategoria()
         {
             _OptionBuilder = new DbContextOptions<ContextBase>();
+        }
+
+        public Task<bool> Delete(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ExecutarMigracao()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IGenerics<Categoria>.Add(Categoria objeto)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IGenerics<Categoria>.Update(Categoria objeto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

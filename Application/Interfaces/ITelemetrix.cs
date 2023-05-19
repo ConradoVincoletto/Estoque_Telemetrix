@@ -14,10 +14,13 @@ namespace Application.Interfaces
         Task<bool> AdicionarProduto(Produto produto);
         Task<Produto> ObterProdutoPorId(int Id);
         Task<Produto> AtualizarProduto(Produto produto);
-
-        Task<bool> InativarProduto(int Id);
+        
 
         //Tarefas Categorias
-        Task<List<Produto>> ListarCategorias();
+        Task<List<Categoria>> ListarCategorias();
+        Task<bool> AdicionarCategoria(Categoria categoria);
+        Task<Categoria> ObterCategoriaPorId(int Id);
+        Task<Categoria> AtualizarCategoria(Categoria categoria);
+        
     }
 }

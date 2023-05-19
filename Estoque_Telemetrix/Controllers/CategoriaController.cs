@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces.InterfaceCategoria;
+using InfraEstrutura.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,23 +26,35 @@ namespace Estoque_Telemetrix.Controllers
         }
 
         [HttpPost("AdicionarCategoria")]
-        public async Task AdicionarCategoria(Categoria categoria)
+        public async Task<IActionResult> AdicionarCategoria(Categoria categoria)
         {
-            await _ICategoria.Add(categoria);
+            return Json( _ITelemetrix.AdicionarCategoria(categoria));
         }
 
         [HttpGet("ObterCategoriaPorId")]
 
         public async Task<IActionResult> ObterCategoriaPorId(int Id)
         {
-            return Json(await _ICategoria.GetEntityById(Id));
+            return Json(await _ITelemetrix.ObterCategoriaPorId(Id));
         }
 
         [HttpPut("AtualizarCategoria")]
 
         public async Task AtualizarCategoria(Categoria categoria)
         {
-            await _ICategoria.Update(categoria);
+            await _ITelemetrix.AtualizarCategoria(categoria);
+        }
+
+        [HttpDelete("InativarCategoria")]
+        public async Task<IActionResult> InativarCategoria()
+        {
+            using (var context = new ContextBase())
+            {
+                var categoria = await context.categorias.FindAsync(1);
+                context.Remove(categoria);
+                await context.SaveChangesAsync();
+            }
+            return Ok("Categoria Inativado com sucesso");
         }
     }
 }

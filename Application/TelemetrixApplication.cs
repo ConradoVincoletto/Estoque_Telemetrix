@@ -14,7 +14,7 @@ namespace Application
         public TelemetrixApplication(IProduto iProduto)
         {
             _iProduto = iProduto;
-        }
+        }        
 
         public Task<Produto> AtualizarProduto(Produto produto)
         {
@@ -24,6 +24,7 @@ namespace Application
         public async Task<List<Categoria>> ListarCategorias()
         {
             var categoria = await _iCategoria.List();
+
             return categoria.Where(c => c.Ativo).ToList();
         }
         public async Task<List<Produto>> ListarProdutos()
@@ -31,6 +32,12 @@ namespace Application
             var produtos = await _iProduto.List();
 
             return produtos.Where(p => p.Ativo).ToList();
+        }
+
+        public async Task<bool> AdicionarCategoria(Categoria categoria)
+        {
+            await _iCategoria.Add(categoria);
+            return true;
         }
         public async Task<bool> AdicionarProduto(Produto produto)
         {
@@ -57,19 +64,31 @@ namespace Application
             return new Produto();
         }
 
+        public async Task<Categoria> ObterCategoriaPorId(int Id)
+        {
+            var categoria = await _iCategoria.GetEntityById(Id);
+            if(categoria == null)
+            {
+                return new Categoria();
+            }
+            if (categoria.Ativo)
+            {
+                return categoria;
+            }
+            return new Categoria();
+        }
+
 
         private async Task<bool> PermiteAdicionarProduto(Categoria categoria)
         {
             var produtos = await _iProduto.List();
             int qtdProdutos = produtos.Count(p => p.categoria.Id == categoria.Id);
             return qtdProdutos < categoria.MaximoItens;
+        }             
+
+        public Task<Categoria> AtualizarCategoria(Categoria categoria)
+        {
+            throw new NotImplementedException();
         }
-              
-        
-
-
-       
-
-      
     }
 }
