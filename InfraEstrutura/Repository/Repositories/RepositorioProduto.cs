@@ -57,20 +57,22 @@ namespace InfraEstrutura.Repository.Repositories
                 await data.SaveChangesAsync();
                 return objeto;
             }
-        }
+        }      
 
-        public async Task<Produto> Delete(Produto objeto)
+
+        public async Task<Produto> Delete(int Id)
         {
-            using (var data = new ContextBase(_OptionBuilder))
+            using (var context = new ContextBase())
             {
-                var produto = await data.Set<Produto>().FindAsync(objeto.Id);
+                var produto =  context.produtos.FirstOrDefault(p => p.Id == Id);
+
                 if (produto != null)
                 {
-                    data.Set<Produto>().Remove(produto);
-                    await data.SaveChangesAsync();
-
+                    produto.Ativo = false;
+                    await context.SaveChangesAsync();                    
                 }
-                return objeto;
+                return produto;               
+
             }
         }
 

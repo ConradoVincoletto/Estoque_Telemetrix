@@ -4,6 +4,7 @@ using Domain.Interfaces.InterfaceCategoria;
 using InfraEstrutura.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Estoque_Telemetrix.Controllers
 {
@@ -28,7 +29,7 @@ namespace Estoque_Telemetrix.Controllers
         [HttpPost("AdicionarCategoria")]
         public async Task<IActionResult> AdicionarCategoria(Categoria categoria)
         {
-            return Json( _ITelemetrix.AdicionarCategoria(categoria));
+            return Json( await _ITelemetrix.AdicionarCategoria(categoria));
         }
 
         [HttpGet("ObterCategoriaPorId")]
@@ -46,15 +47,10 @@ namespace Estoque_Telemetrix.Controllers
         }
 
         [HttpDelete("InativarCategoria")]
-        public async Task<IActionResult> InativarCategoria()
+
+        public async Task<IActionResult> InativarCategoria(int Id)
         {
-            using (var context = new ContextBase())
-            {
-                var categoria = await context.categorias.FindAsync(1);
-                context.Remove(categoria);
-                await context.SaveChangesAsync();
-            }
-            return Ok("Categoria Inativado com sucesso");
+            return Json(await _ITelemetrix.InativarCategoria(Id));
         }
     }
 }

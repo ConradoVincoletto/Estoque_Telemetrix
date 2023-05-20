@@ -14,6 +14,6 @@ namespace Domain.Interfaces.InterfaceProduto
         Task<Produto> GetProdutoById(int id);
         Task<List<Produto>> List();
         Task<Produto> Update(Produto objeto);
-        Task<Produto> Delete(Produto objeto);
+        Task<Produto> Delete(int Id);
     }
 }

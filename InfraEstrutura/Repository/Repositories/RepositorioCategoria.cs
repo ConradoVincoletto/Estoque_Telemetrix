@@ -58,27 +58,35 @@ namespace InfraEstrutura.Repository.Repositories
         {
             using (var data = new ContextBase(_OptionBuilder))
             {
-                data.Set<Categoria>().Update(objeto);
-                await data.SaveChangesAsync();
-                return objeto;
+                var categoriaOriginal = await data.Set<Categoria>().FindAsync(objeto.Id);
+
+                if (categoriaOriginal != null)
+                {                    
+                    categoriaOriginal.Nome = objeto.Nome;                    
+                    data.Set<Categoria>().Update(categoriaOriginal);                    
+                    await data.SaveChangesAsync();
+                }
+
+                return categoriaOriginal;
             }           
         }
 
-        public async Task<Categoria> Delete(Categoria objeto)
+        public async Task<Categoria> Delete(int Id)
         {
-            using (var data = new ContextBase(_OptionBuilder))
+            using (var context = new ContextBase())
             {
-                var categoria = await data.Set<Categoria>().FindAsync(objeto.Id);
+                var categoria = context.categorias.FirstOrDefault(p => p.Id == Id);
+
                 if (categoria != null)
                 {
-                    data.Set<Categoria>().Remove(categoria);
-                    await data.SaveChangesAsync();
-                    
+                    categoria.Ativo = false;
+                    await context.SaveChangesAsync();
                 }
-                return objeto;
-            }                       
+                return categoria;
+
+            }
         }
 
-        
+
     }
 }

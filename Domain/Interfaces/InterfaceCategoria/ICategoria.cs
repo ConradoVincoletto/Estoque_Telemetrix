@@ -14,6 +14,6 @@ namespace Domain.Interfaces.InterfaceCategoria
         Task<Categoria> GetCategoriaById(int id);
         Task<List<Categoria>> List();
         Task<Categoria> Update(Categoria objeto);
-        Task<Categoria> Delete(Categoria objeto);
+        Task<Categoria> Delete(int Id);
     }
 }

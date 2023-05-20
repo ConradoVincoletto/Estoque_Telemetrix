@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Interfaces.InterfaceCategoria;
 using Domain.Interfaces.InterfaceProduto;
 using InfraEstrutura.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
 namespace Application
@@ -18,9 +19,16 @@ namespace Application
         }  
         
 
-        public Task<Produto> AtualizarProduto(Produto produto)
+        public async Task<Produto> AtualizarProduto(Produto produto)
         {
-            throw new NotImplementedException();
+            await _iProduto.Update(produto);
+            return new Produto();
+        }
+
+        public async Task<Categoria> AtualizarCategoria(Categoria categoria)
+        {
+            await _iCategoria.Update(categoria);
+            return new Categoria();
         }
 
         public async Task<List<Categoria>> ListarCategorias()
@@ -78,10 +86,39 @@ namespace Application
                 return categoria;
             }
             return new Categoria();
-        }
-        public Task<Categoria> AtualizarCategoria(Categoria categoria)
+        }     
+
+
+        public async Task<Produto> InativarProduto(int Id)
         {
-            throw new NotImplementedException();
+            using (var context = new ContextBase())
+            {
+                var produto = context.produtos.FirstOrDefault(p => p.Id == Id);
+
+                if (produto != null)
+                {
+                    produto.Ativo = false;
+                    await context.SaveChangesAsync();
+                }
+                return produto;
+
+            }
+        }
+
+        public async Task<Categoria> InativarCategoria(int Id)
+        {
+            using (var context = new ContextBase())
+            {
+                var categoria = context.categorias.FirstOrDefault(p => p.Id == Id);
+
+                if (categoria != null)
+                {
+                    categoria.Ativo = false;
+                    await context.SaveChangesAsync();
+                }
+                return categoria;
+
+            }
         }
 
 

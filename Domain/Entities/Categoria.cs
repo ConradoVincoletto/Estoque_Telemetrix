@@ -26,6 +26,7 @@ namespace Domain.Entities
         public int MaximoItens { get; set; }
 
         [Column("CATEGORIA_DATA_CRIACAO")]
+        
         public DateTime DataCriacao { get; set; }
 
         [Column("CATEGORIA_ATIVO")]

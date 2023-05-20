@@ -46,17 +46,11 @@ namespace Estoque_Telemetrix.Controllers
             await _ITelemetrix.AtualizarProduto(produto);
         }
 
-        [HttpDelete("InativarProduto")]
+        [HttpDelete("InativarProduto")]      
 
-        public async Task<IActionResult> InativarProduto()
+        public async Task<IActionResult> InativarProduto(int Id)
         {
-            using(var context = new ContextBase())
-            {
-                var produto = await context.produtos.FindAsync(1);
-                context.Remove(produto);
-                await context.SaveChangesAsync();
-            }
-            return Ok("Produto Inativado com sucesso"); 
+            return Json(await _ITelemetrix.InativarProduto(Id));
         }
     }
 }
